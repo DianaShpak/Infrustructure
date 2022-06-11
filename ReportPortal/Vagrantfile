@@ -1,0 +1,41 @@
+
+Vagrant.configure("2") do |config|
+  config.vm.box_download_insecure = true
+  config.vm.box = "ubuntu/bionic64"
+
+  config.vm.network "private_network", ip: "192.168.56.1"
+  config.vm.network "forwarded_port", guest: 8080, host: 8080
+
+  config.vm.hostname = "reportportal"
+  config.vm.post_up_message = "REPORTPORTAL is now started, open in your browser IP address of deployed environment at port 8080 - http://IP_ADDRESS:8080,  use next login\pass for access: user-default,password-1q2w3e and user-superadmin,password-erebus"
+
+  config.vm.provider :virtualbox do |vb|
+      vb.memory = "5000"
+  end
+
+  config.vm.provision "shell", inline: <<-SHELL
+    sudo apt-get update
+
+    sudo apt-get install -y ca-certificates curl gnupg lsb-release
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg    
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+    
+    sudo apt-get update
+    sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+    apt-cache madison docker-ce
+    sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+    sudo usermod -aG docker vagrant
+
+    sudo apt-get install -y docker-compose-plugin
+    apt-cache madison docker-compose-plugin
+    sudo apt-get install -y docker-compose-plugin
+
+    sudo curl -SL https://github.com/docker/compose/releases/download/v2.5.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
+    sudo chmod +x /usr/local/bin/docker-compose
+    docker-compose --version
+
+    curl https://raw.githubusercontent.com/reportportal/reportportal/master/docker-compose.yml -o docker-compose.yml
+    docker-compose -p reportportal up -d
+
+  SHELL
+end
