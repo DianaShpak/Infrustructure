@@ -5,9 +5,12 @@ Vagrant.configure("2") do |config|
 
   config.vm.network "private_network", ip: "192.168.56.1"
   config.vm.network "forwarded_port", guest: 8080, host: 8080
+  config.vm.network "forwarded_port", guest: 4444, host: 4444
+  config.vm.network "forwarded_port", guest: 4243, host: 4243
 
-  config.vm.hostname = "reportportal"
-  config.vm.post_up_message = "REPORTPORTAL is now started, open in your browser IP address of deployed environment at port 8080 - http://IP_ADDRESS:8080,  use next login\pass for access: user-default,password-1q2w3e and user-superadmin,password-erebus"
+  config.vm.hostname = "reportPortalSelenoid"
+  config.vm.post_up_message = "Report Portal is now started, open in your browser IP address of deployed environment at port 8080 - http://IP_ADDRESS:8080,  use next login\pass for access: user-default,password-1q2w3e and user-superadmin,password-erebus
+  Selenoid is now started, go ahead and run your tests against http://localhost:4444/wd/hub"
 
   config.vm.provider :virtualbox do |vb|
       vb.memory = "9000"

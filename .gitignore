@@ -1,4 +1,4 @@
-/ReportPortal/.vagrant/
-/Selenoid/.vagrant/
-/ReportPortal/ubuntu-bionic-18.04-cloudimg-console.log
-/Selenoid/ubuntu-xenial-16.04-cloudimg-console.log
+/report_portal_selenoid/.vagrant/
+/jenkins/.vagrant/
+/report_portal_selenoid/ubuntu-bionic-18.04-cloudimg-console.log
+/jenkins/ubuntu-xenial-16.04-cloudimg-console.log
