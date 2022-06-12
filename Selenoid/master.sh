@@ -10,20 +10,6 @@ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubun
 sudo apt-get update
 sudo apt-get -y install docker-ce docker-ce-cli containerd.io
 
-sudo sed -i -e 's+ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock+ExecStart=/usr/bin/dockerd -H fd:// -H tcp://0.0.0.0:4243+g' /lib/systemd/system/docker.service
-sudo systemctl daemon-reload
-sudo service docker restart
-sudo curl http://localhost:4243/version
-
-
-
-
-echo "run selenoid"
-docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ${HOME}:/root -e OVERRIDE_HOME=${HOME} aerokube/cm:latest-release selenoid start --vnc --tmpfs 128 --last-versions 2
-
-echo "run selenoid-ui"
-docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ${HOME}:/root -e OVERRIDE_HOME=${HOME} aerokube/cm:latest-release selenoid-ui start --port 8181
-
 echo "install java"
 sudo apt update
 sudo apt -y install openjdk-8-jdk
